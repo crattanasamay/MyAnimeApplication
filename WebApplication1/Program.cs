@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration.UserSecrets;
 using RestSharp;
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
-
+var DefaultConnection = builder.Configuration["MyDbConnectionString"];
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -23,7 +23,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireUserRole", policy => policy.RequireRole("user"));
 });
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString("DefaultConnection")
+    builder.Configuration.GetConnectionString(DefaultConnection)
 ));
 
 

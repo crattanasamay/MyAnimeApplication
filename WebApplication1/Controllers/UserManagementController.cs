@@ -89,8 +89,6 @@ namespace WebApplication1.Controllers
         {
             try
             {
-
-
                 // If username is not found in the database
                 if (!(_db.Users.Any(U => U.UserName == obj.UserName)))
                 {
