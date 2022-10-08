@@ -1,0 +1,36 @@
+﻿
+@model List<AnimeHistoryModel>
+
+<div id="ChildDashboardView">
+    <table class="table table-bordered table-striped" style="width:50%">
+        <tr class="">
+            <th style=""><h4>Anime Image</h4></th>
+            <th style="">Anime Name</th>
+            <th style="">Anime Season</th>
+            <th style="">Rating</th>
+        </tr>
+        @foreach(var obj in Model){
+            <tr class="">
+                <td class="">
+                    <img src="@obj.AnimeImg" style="max-height: 150px"/>
+                </td>
+                <td class="">
+                    <h5>@obj.AnimeTitle</h5>
+                </td>
+                <td>
+                    <h4>@obj.AnimeSeason</h4>
+
+                </td>
+                <td>
+                    <h4>@obj.AnimeRating</h4>
+
+                </td>
+
+            </tr>
+
+        }
+
+
+    </table>
+
+</div>

@@ -1,0 +1,30 @@
+﻿@model  int[];
+
+<div id="ChildDashboardView">
+    <div class="row">
+        <div class="card col-4 rounded-4 bg-secondary">
+            <div class="card-body ">
+                <h3 class="card-header text-center bg-secondary">
+                    Anime Above 7.0
+                </h3>
+                <h3 class="card-text text-center">
+                    @Model[0]
+                </h3>
+            </div>
+        </div>
+
+        <div class="card col-4 rounded-4 bg-secondary">
+            <div class="card-body">
+                <h3 class="card-header text-center bg-secondary">
+                    Anime Below 7.0
+                </h3>
+                <h3 class="card-text text-center">
+                    @Model[1]
+                </h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

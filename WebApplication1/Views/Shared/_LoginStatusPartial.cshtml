@@ -1,0 +1,55 @@
+﻿@if(User.Identity.IsAuthenticated){
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+           
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <form method="post" asp-controller="UserManagement" asp-action="Logout">
+                            <button class="btn btn-primary" type="submit"> Logout</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form method="post" asp-controller="Dashboard" asp-action="Index">
+                            <button class="btn btn-primary" type="submit">Dashboard</button>
+                        </form>
+                    </li>
+                    
+                    
+                </ul>
+               
+            </div>
+        </div>
+    </nav>
+
+
+
+
+}
+else{
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+
+                        <a class="nav-link text-dark" asp-controller="UserManagement" asp-action="Login">Login</a>
+                    </li>
+                    <li class="nav-item">
+
+                        <a class="nav-link text-dark" asp-controller="UserManagement" asp-action="Index">Create Account</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    
+
+
+
+
+}
