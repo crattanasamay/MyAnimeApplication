@@ -56,7 +56,8 @@ namespace WebApplication1.Controllers
             }
             catch(Exception e)
             {
-                return View("Error");
+                return RedirectToAction("Index", "Home");
+
             }
         }
 
@@ -133,7 +134,7 @@ namespace WebApplication1.Controllers
             }
             catch(Exception e)
             {
-                return View("Error");
+                return View("Error", e);
             }
         }
         [HttpPost]
