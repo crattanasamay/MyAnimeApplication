@@ -6,11 +6,14 @@ using Microsoft.Extensions.Configuration.UserSecrets;
 using RestSharp;
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
-var DefaultConnection = builder.Configuration["MyDbConnectionString"];
+var DefaultConnection = builder.Configuration["ConnectionStringAzure"];
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
+    builder.Configuration["ConnectionStringAzure"]
+));
 builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth",options =>
 {
     options.Cookie.Name = "MyCookieAuth";
@@ -22,14 +25,12 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireUserRole", policy => policy.RequireRole("user"));
 });
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString(DefaultConnection)
-));
+
 
 
 //builder.Services.AddHttpClient<IAnimeClient,AnimeClient>(); // Jikan Rapid API v2 (Depreciated)
-builder.Services.AddSingleton<IJikanApiClient, JikanApiClient>();
 
+builder.Services.AddSingleton<IJikanApiClient, JikanApiClient>();
 builder.Services.AddHttpClient<IMyAnimeClient, MyAnimeClient>(); // MyAnimeList API
 
 
