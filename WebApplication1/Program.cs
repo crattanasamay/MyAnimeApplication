@@ -11,9 +11,14 @@ var DefaultConnection = builder.Configuration["ConnectionStringAzure"];
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+
+// Use Local Connection String if in development
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
     builder.Configuration["ConnectionStringAzure"]
 ));
+
+
 builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth",options =>
 {
     options.Cookie.Name = "MyCookieAuth";

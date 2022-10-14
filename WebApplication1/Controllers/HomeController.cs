@@ -27,6 +27,25 @@ namespace WebApplication1.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [Route("HomePageCarouselPartial")]
+        public async Task<IActionResult> HomePageCarouselPartial()
+        {
+            try
+            {
+
+                return PartialView("_HomePageCarouselPartial");
+
+            }
+            catch (Exception e)
+            {
+
+                // throw exception for error either API / or Post Connection
+            }
+
+            return View();
+        }
         
         public void OnGet()
         {
