@@ -27,6 +27,7 @@ namespace WebApplication1.Clients
         {
             try
             {
+
                 string animeUrl = $"https://api.myanimelist.net/v2/anime/{id}?fields=mean"; //get anime rating tbh idk why it's mean but w/e
                 var request = new HttpRequestMessage
                 {

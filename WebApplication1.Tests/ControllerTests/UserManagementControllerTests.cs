@@ -25,8 +25,7 @@ namespace WebApplication1.Tests.ControllerTests
     public class UserManagementControllerTests
     {
 
-
-       
+      
         public ApplicationDbContext GetDbContext()
         {
             IConfiguration _config = new ConfigurationBuilder().Build();
@@ -89,17 +88,11 @@ namespace WebApplication1.Tests.ControllerTests
 
         }
 
-        [Fact]
-        public void UserManagement_CreateAccount_ReturnIActionResult()
-        {
-            var _db = GetDbContext();
-            var controller = new UserManagementController(_db);
+      
 
-            var result = controller.Index();
+      
 
-            result.Should().BeOfType<ViewResult>();
 
-        }
 
 
 

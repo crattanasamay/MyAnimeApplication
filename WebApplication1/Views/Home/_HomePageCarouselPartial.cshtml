@@ -1,10 +1,38 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@using WebApplication1.Models.JikanAnimeApi
+@model List<Datum>
+ 
 
-    ViewData["Title"] = "About Anime";
-}
 
-<h1>@ViewData["Title"]</h1>
-<p>Use this page to detail your site's about us page.</p>
+<h1 class="text-center">Top Fall 2022 Anime</h1>
+
+<div class="row">
+    <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+        <img src="@Model[1].images.jpg.large_image_url"
+             class="w-100 shadow-1-strong rounded mb-4"
+             alt="@Model[1].title_english" style="max-height: 480px;" />
+
+        <img src="@Model[2].images.jpg.large_image_url"
+             class="w-100 shadow-1-strong rounded mb-4"
+             alt="@Model[2].title_english" style="max-height: 400px;" />
+    </div>
+
+    <div class="col-lg-4 mb-4 mb-lg-0">
+        <img src="@Model[3].images.jpg.large_image_url"
+             class="w-100 shadow-1-strong rounded mb-4"
+             alt="@Model[3].title_english" />
+
+        <img src="@Model[4].images.jpg.large_image_url"
+             class="w-100 shadow-1-strong rounded mb-4"
+             alt="@Model[4].title_english" style="max-height: 480px;"/>
+    </div>
+
+    <div class="col-lg-4 mb-4 mb-lg-0">
+        <img src="@Model[5].images.jpg.large_image_url"
+             class="w-100 shadow-1-strong rounded mb-4"
+             alt="@Model[5].title_english" style="max-height: 420px;" />
+
+        <img src="@Model[0].images.jpg.large_image_url"
+             class="w-100 shadow-1-strong rounded mb-4"
+             alt="@Model[0].title_english" style="max-height: 480px; "/>
+    </div>
+</div>
