@@ -4,6 +4,10 @@ using MyAnimeListRoot = WebApplication1.Models.MyAnimeClientApiModels.Root;
 using MyAnime = WebApplication1.Models.AnimeApi.Anime;
 using WebApplication1.Models;
 using System.Runtime.CompilerServices;
+using Polly.Retry;
+using Polly;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
 
 namespace WebApplication1.Clients
 {
@@ -16,11 +20,15 @@ namespace WebApplication1.Clients
 
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _config;
+        private readonly AsyncRetryPolicy _asyncRetryPolicy;
+        private readonly AsyncRetryPolicy _asyncRetryPolicyTime;
 
         public MyAnimeClient(HttpClient httpClient,IConfiguration config)
         {
             _httpClient = httpClient;
             _config = config;
+            _asyncRetryPolicy = Policy.Handle<HttpRequestException>().RetryAsync(3);
+            _asyncRetryPolicyTime = Policy.Handle<HttpRequestException>().WaitAndRetryAsync(3, time => TimeSpan.FromSeconds(3));
         }
 
         public async Task<Boolean> GetAnimeRating(int id)
@@ -39,18 +47,22 @@ namespace WebApplication1.Clients
                     }
                 };
 
-                using var response = await _httpClient.SendAsync(request);
+                return await _asyncRetryPolicyTime.ExecuteAsync(async () =>
                 {
-                    response.EnsureSuccessStatusCode();
-                    var body = await response.Content.ReadAsStringAsync();
-                    dynamic? json = JsonConvert.DeserializeObject<MyAnimeListRoot>(body);
-                    if (json == null) return false;
-                    if (json.mean > 7.00)
+                    using var response = await _httpClient.SendAsync(request);
                     {
-                        return true;
+                        var body = await response.Content.ReadAsStringAsync();
+                        dynamic? json = JsonConvert.DeserializeObject<MyAnimeListRoot>(body);
+                        if (json == null) return false;
+                        if (json.mean > 7.00)
+                        {
+                            return true;
+                        }
+                        return false;
                     }
-                    return false;
-                }
+
+                });
+               
             }
             catch(Exception e)
             {
@@ -76,13 +88,20 @@ namespace WebApplication1.Clients
                         }
 
                 };
-                using var response = await _httpClient.SendAsync(request);
+
+                return await _asyncRetryPolicyTime.ExecuteAsync(async () =>
                 {
-                    response.EnsureSuccessStatusCode();
-                    var body = await response.Content.ReadAsStringAsync();
-                    dynamic? json = JsonConvert.DeserializeObject<SingleAnimeModel>(body);
-                    return json;
-                };
+                    using var response = await _httpClient.SendAsync(request);
+                    {
+                        response.EnsureSuccessStatusCode();
+                        var body = await response.Content.ReadAsStringAsync();
+                        dynamic? json = JsonConvert.DeserializeObject<SingleAnimeModel>(body);
+                        if (json == null) return new SingleAnimeModel(); // return an empty model
+                        return json;
+                    };
+
+                });
+               
             }
 
             catch (Exception e)

@@ -2,14 +2,19 @@
 using RestSharp;
 using Microsoft.DotNet.MSIdentity.Shared;
 using Newtonsoft.Json;
+using Polly.Retry;
+using Polly;
 
 namespace WebApplication1.Clients
 {
     public class JikanApiClient  : IJikanApiClient
     {
+
+        private readonly AsyncRetryPolicy _asyncRetryPolicy;
+        
         public JikanApiClient()
         {
-      
+            _asyncRetryPolicy = Policy.Handle<HttpRequestException>().WaitAndRetryAsync(3, time => TimeSpan.FromSeconds(3));
         }
 
         public async Task<JikanSeasonModel> GetAnimeBySeason(string season,string year)
@@ -21,12 +26,16 @@ namespace WebApplication1.Clients
                 string url = $"https://api.jikan.moe/v4/seasons/{year}/{season}";
                 var client = new RestClient(url);
                 var request = new RestRequest();
+                return await _asyncRetryPolicy.ExecuteAsync(async () =>
+                {
+                    var response = await client.GetAsync(request);
 
-                var response = await client.GetAsync(request);
+                    var body = JsonConvert.DeserializeObject<JikanSeasonModel>(response.Content);
+                    if(body == null) return new JikanSeasonModel(); // return an empty Model
+                    return body;
 
-                var body = JsonConvert.DeserializeObject<JikanSeasonModel>(response.Content);
-
-                return body;
+                });
+                
             }
             catch(Exception e)
             {

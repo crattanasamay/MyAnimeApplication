@@ -36,7 +36,8 @@ builder.Services.AddAuthorization(options =>
 //builder.Services.AddHttpClient<IAnimeClient,AnimeClient>(); // Jikan Rapid API v2 (Depreciated)
 
 builder.Services.AddSingleton<IJikanApiClient, JikanApiClient>();
-builder.Services.AddHttpClient<IMyAnimeClient, MyAnimeClient>(); // MyAnimeList API
+builder.Services.AddSingleton<IMyAnimeClient, MyAnimeClient>();
+builder.Services.AddHttpClient<IMyAnimeClient, MyAnimeClient>(); 
 
 
 
