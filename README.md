@@ -18,8 +18,8 @@ A simple tracker where users can add their favorite anime to their list, and kee
 * MyAnimeList Rest API beta(v2) https://myanimelist.net/apiconfig/references/api/v2
 * Jikans Anime API v4 https://jikan.moe/
 
+### User Secrets 
 ```
-### User Secrets
 {
   "MyAnimeListApiKey": "Your MyAnimeList API Key",
   "ConnectionStringAzure": "Your Connection String From Azure"
