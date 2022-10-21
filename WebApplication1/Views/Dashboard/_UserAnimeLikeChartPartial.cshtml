@@ -1,0 +1,49 @@
+﻿@model List<SingleAnimeModel>;
+
+
+<div class="container-fluid" style="float:left; height:500px; width:500px" id="userChart">
+    <canvas id="myChart"></canvas>
+
+    <script>
+        const data = {
+            labels: [
+                'Eating',
+                'Drinking',
+                'Sleeping',
+                'Designing',
+                'Coding',
+                'Cycling',
+                'Running'
+            ],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [65, 59, 90, 81, 56, 55, 40],
+                fill: true,
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                borderColor: 'rgb(255, 99, 132)',
+                pointBackgroundColor: 'rgb(255, 99, 132)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(255, 99, 132)'
+            }]
+        };
+
+        var config = {
+            type: 'radar',
+            data: data,
+            options: {}
+        };
+    </script>
+    <script>
+        var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+
+</div>
+
+
+@section Scripts{
+   
+}

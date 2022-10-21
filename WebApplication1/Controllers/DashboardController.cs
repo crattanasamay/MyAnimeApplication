@@ -181,7 +181,6 @@ namespace WebApplication1.Controllers
                         AnimeId = id,
                         AnimeDateAdded = DateTime.Now,
                         Rating = await _myAnimeClient.GetAnimeRating(id),
-                       
 
                     };
                     await _db.UserAnime.AddAsync(obj);
@@ -202,6 +201,31 @@ namespace WebApplication1.Controllers
             {
                 return View("Error");
             }
+        }
+
+
+        [HttpPost]
+        [Route("UserAnimeChart")]
+        public async Task<IActionResult> UserAnimeChartPartial()
+        {
+            try
+            {
+                List<UserAnime> row = _db.UserAnime.Where(x => x.UserName == User.Identity.Name).ToList();
+                List<SingleAnimeModel> myList = new();
+                Dictionary<string,bool> map = new Dictionary<string,bool>();
+
+                foreach (var obj in row)
+                {
+                    SingleAnimeModel anime = await _myAnimeClient.GetSingleAnimeInfo(obj.AnimeId);
+                    myList.Add(anime);
+                }
+                return PartialView("_UserAnimeLikeChartPartial", myList);
+            }
+            catch(Exception e)
+            {
+                return View();
+            }
+
         }
     }  
 }

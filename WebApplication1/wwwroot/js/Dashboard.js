@@ -1,5 +1,9 @@
 ﻿$("#mainView").click(() => {
-    $("#ChildDashboardView").remove();
+    DeleteMainView();
+    AddMainDashboardView();  
+    $.post("/UserAnimeChart/", (data) => {
+        $("#UserChartDashboardView").append(data);
+    });
     $.post("/AnimeLikedPartial/", function (data) {
         $("#MainDashboardView").append(data);
     });
@@ -8,11 +12,11 @@
 
 // send request to anime partial season using post method
 function LoadAnimeSeason(event) {
+    DeleteMainView();
     var seasonString = (event.target.id).toString();
     if (seasonString.search("_") != -1) {
         $.post("/AnimeSeason/", { id: seasonString }, function (data) {
-            $("#ChildDashboardView").remove();
-            $("#MainDashboardView").append(data);
+            $("#DashboardView").append(data);
         });
     }
     else {
@@ -22,9 +26,9 @@ function LoadAnimeSeason(event) {
 
 
 $("#anime_history").click((event) => {
-    $("#ChildDashboardView").remove();
+    DeleteMainView();
     $.post("/AnimeHistory/", function (data) {
-        $("#MainDashboardView").append(data);
+        $("#DashboardView").append(data);
     });
 })
 
@@ -37,14 +41,23 @@ $("ul#submenu1 > li > a > span").click((event) => {
 
 
 $(document).ready(() => {
-    $("#ChildDashboardView").remove();
+    DeleteMainView();
+    AddMainDashboardView();
     $.post("/AnimeLikedPartial/", function (data) {
         $("#MainDashboardView").append(data);
     });
-  
-   
+
+    $.post("/UserAnimeChart/", (data) => {
+        $("#UserChartDashboardView").append(data);
+    });
 });
-//wait for the DOM to finish loading
+function AddMainDashboardView() {
+    $('<div class="container-fluid" id="MainDashboardView"></div>').appendTo('#DashboardView');
+    $('<div class="container-fluid" id="UserChartDashboardView"></div>').appendTo('#DashboardView');
+}
+function DeleteMainView() {
+    $("#DashboardView").html("");
+}
 
 
 
