@@ -31,7 +31,7 @@ namespace WebApplication1.Clients
             _asyncRetryPolicyTime = Policy.Handle<HttpRequestException>().WaitAndRetryAsync(3, time => TimeSpan.FromSeconds(3));
         }
 
-        public async Task<Boolean> GetAnimeRating(int id)
+        public async Task<Double> GetAnimeRating(int id)
         {
             try
             {
@@ -53,12 +53,8 @@ namespace WebApplication1.Clients
                     {
                         var body = await response.Content.ReadAsStringAsync();
                         dynamic? json = JsonConvert.DeserializeObject<MyAnimeListRoot>(body);
-                        if (json == null) return false;
-                        if (json.mean > 7.00)
-                        {
-                            return true;
-                        }
-                        return false;
+                        if (json == null) return 0.00;
+                        return json.mean;
                     }
 
                 });
@@ -66,7 +62,8 @@ namespace WebApplication1.Clients
             }
             catch(Exception e)
             {
-                return false;
+                throw;
+                /// Doing Something
             }
         
         }
@@ -117,7 +114,7 @@ namespace WebApplication1.Clients
 
     public interface IMyAnimeClient
     {
-        public Task<Boolean> GetAnimeRating(int id);
+        public Task<Double> GetAnimeRating(int id);
         public Task<SingleAnimeModel> GetSingleAnimeInfo(int id);
     }
 

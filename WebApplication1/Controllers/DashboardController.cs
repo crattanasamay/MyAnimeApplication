@@ -140,7 +140,7 @@ namespace WebApplication1.Controllers
                 foreach (var obj in row)
                 {
                     var check = await _myAnimeClient.GetAnimeRating(obj.AnimeId);
-                    if (check){
+                    if (check > 7.00){
                         counterAbove++;
                     }
                     else{
@@ -180,6 +180,8 @@ namespace WebApplication1.Controllers
                         UserName = User.Identity.Name,
                         AnimeId = id,
                         AnimeDateAdded = DateTime.Now,
+                        Rating = await _myAnimeClient.GetAnimeRating(id),
+                       
 
                     };
                     await _db.UserAnime.AddAsync(obj);

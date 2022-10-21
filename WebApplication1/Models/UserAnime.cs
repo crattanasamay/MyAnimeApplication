@@ -11,6 +11,8 @@ namespace WebApplication1.Models
         public int AnimeId { get; set; }
 
         public DateTime AnimeDateAdded { get; set; }
+
+        public double Rating { get; set; }
         
         //public ICollection<User> Anime { get; set; }
 
