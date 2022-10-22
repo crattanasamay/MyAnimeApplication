@@ -23,8 +23,15 @@
                 </td>
                 <td>
                     <h4>@obj.AnimeRating</h4>
+                </td>
+                <td>
+                    <form asp-controller="Dashboard" asp-validation-for="RemoveButton" asp-action="RemoveUserAnime" asp-route-id="@obj.AnimeId" method="post">
+                        <button type="submit" class="btn btn-primary">Remove Anime</button>
+                    </form>
 
                 </td>
+                
+                
 
             </tr>
 
@@ -34,3 +41,4 @@
     </table>
 
 </div>
+

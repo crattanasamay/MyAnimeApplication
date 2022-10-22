@@ -8,6 +8,10 @@ using WebApplication1.Models.AnimeApi;
 using WebApplication1.Models.JikanAnimeApi;
 using Anime = WebApplication1.Models.Anime;
 using MyAnime = WebApplication1.Models.AnimeApi.Anime;
+using Genre = WebApplication1.Models.SingleAnimeModel;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using Newtonsoft.Json;
 
 namespace WebApplication1.Controllers
 {
@@ -139,8 +143,8 @@ namespace WebApplication1.Controllers
                 int counterBelow = 0;
                 foreach (var obj in row)
                 {
-                    var check = await _myAnimeClient.GetAnimeRating(obj.AnimeId);
-                    if (check > 7.00){
+                    
+                    if (obj.Rating > 7.00){
                         counterAbove++;
                     }
                     else{
@@ -161,7 +165,6 @@ namespace WebApplication1.Controllers
 
         // Like button add to database
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> LikeAnime(int id)
         {
             try
@@ -175,12 +178,21 @@ namespace WebApplication1.Controllers
                 // SQL QUERY Select * FROM UserAnime WHERE UserName = $"{User.Identity.Name} AND AnimeId = id"
                 if (!row.Any())
                 {
+                    var getAnimeInfo = await _myAnimeClient.GetSingleAnimeInfo(id);
+                    var getGenreList = getAnimeInfo.genres;
+                    string genreString = "";
+                    foreach(var genre in getGenreList)
+                    {
+                        genreString += $"{genre.name},";
+                    }
                     UserAnime obj = new()
                     {
+
                         UserName = User.Identity.Name,
                         AnimeId = id,
                         AnimeDateAdded = DateTime.Now,
                         Rating = await _myAnimeClient.GetAnimeRating(id),
+                        genres = genreString,
 
                     };
                     await _db.UserAnime.AddAsync(obj);
@@ -211,14 +223,36 @@ namespace WebApplication1.Controllers
             try
             {
                 List<UserAnime> row = _db.UserAnime.Where(x => x.UserName == User.Identity.Name).ToList();
-                List<SingleAnimeModel> myList = new();
-                Dictionary<string,bool> map = new Dictionary<string,bool>();
-
-                foreach (var obj in row)
+                //List<SingleAnimeModel> myList = new List<SingleAnimeModel>();
+                Dictionary<string, int> genreIndex = new();
+                List<UserAnimeChartModel> myList = new();
+                foreach (var item in row)
                 {
-                    SingleAnimeModel anime = await _myAnimeClient.GetSingleAnimeInfo(obj.AnimeId);
-                    myList.Add(anime);
+                    string[] genreList = _myAnimeClient.SplitGenreString(item.genres);
+                    string[] genreListResult = genreList.Take(genreList.Length - 1).ToArray();
+                   
+                    foreach (var genre in genreListResult)
+                    {
+                        Console.WriteLine(genre);
+                        //if the genre already exists in list 
+                        if (genreIndex.ContainsKey(genre))
+                        {
+                            // grab the index inside genreIndex and add counter
+                            myList[genreIndex[$"{genre}"]].counter++;
+                        }
+                        else
+                        {
+                            genreIndex[$"{genre}"] = myList.Count();
+                            myList.Add(new UserAnimeChartModel
+                            {
+                                counter = 1,
+                                genre = genre,
+                                maxValue = 0,
+                            });
+                        }
+                    }
                 }
+               
                 return PartialView("_UserAnimeLikeChartPartial", myList);
             }
             catch(Exception e)
@@ -227,5 +261,25 @@ namespace WebApplication1.Controllers
             }
 
         }
+
+        [HttpPost]
+        [Route("RemoveUserAnime")]
+        public async Task<IActionResult> RemoveUserAnime(int id)
+        {
+
+            var row = (from x in _db.UserAnime where x.UserName == User.Identity.Name && x.AnimeId == id select x).First();
+            if(row != null)
+            {
+                _db.UserAnime.Remove(row);
+                await _db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index", "Dashboard");
+
+
+
+        }
+
+
     }  
 }

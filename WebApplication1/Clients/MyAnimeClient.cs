@@ -108,6 +108,13 @@ namespace WebApplication1.Clients
             return null;
 
         }
+
+        public string[] SplitGenreString(string genreString)
+        {
+            string[] genres = genreString.Split(',');
+
+            return genres;
+        }
     }
 
   
@@ -116,6 +123,8 @@ namespace WebApplication1.Clients
     {
         public Task<Double> GetAnimeRating(int id);
         public Task<SingleAnimeModel> GetSingleAnimeInfo(int id);
+
+        public string[] SplitGenreString(string genreString);
     }
 
 }

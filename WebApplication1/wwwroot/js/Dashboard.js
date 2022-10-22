@@ -40,6 +40,8 @@ $("ul#submenu1 > li > a > span").click((event) => {
 });
 
 
+
+
 $(document).ready(() => {
     DeleteMainView();
     AddMainDashboardView();

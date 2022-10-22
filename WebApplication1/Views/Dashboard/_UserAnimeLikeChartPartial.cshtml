@@ -1,23 +1,26 @@
-﻿@model List<SingleAnimeModel>;
+﻿@model List<UserAnimeChartModel>;
 
 
 <div class="container-fluid" style="float:left; height:500px; width:500px" id="userChart">
     <canvas id="myChart"></canvas>
-
     <script>
+
+        var genreLabels = [];
+        var genreData = [];
+        var maxCounter = 0;
+
+        @foreach(var obj in Model){
+            @:genreLabels.push("@obj.genre");
+            @:genreData.push("@obj.counter");
+                    
+        }
+        console.log(genreLabels);
+        console.log(genreData)
         const data = {
-            labels: [
-                'Eating',
-                'Drinking',
-                'Sleeping',
-                'Designing',
-                'Coding',
-                'Cycling',
-                'Running'
-            ],
+            labels: genreLabels,
             datasets: [{
-                label: 'My First Dataset',
-                data: [65, 59, 90, 81, 56, 55, 40],
+                label: 'Liked Anime',
+                data: genreData,
                 fill: true,
                 backgroundColor: 'rgba(0, 0, 0, 0)',
                 borderColor: 'rgb(255, 99, 132)',
@@ -31,7 +34,17 @@
         var config = {
             type: 'radar',
             data: data,
-            options: {}
+            options: {
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: false
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: Math.max(data),
+                    }
+                }
+            }
         };
     </script>
     <script>

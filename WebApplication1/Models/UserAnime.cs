@@ -13,6 +13,8 @@ namespace WebApplication1.Models
         public DateTime AnimeDateAdded { get; set; }
 
         public double Rating { get; set; }
+
+        public string genres { get; set; }
         
         //public ICollection<User> Anime { get; set; }
 
