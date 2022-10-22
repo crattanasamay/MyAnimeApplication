@@ -247,7 +247,6 @@ namespace WebApplication1.Controllers
                             {
                                 counter = 1,
                                 genre = genre,
-                                maxValue = 0,
                             });
                         }
                     }
