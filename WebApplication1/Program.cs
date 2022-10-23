@@ -10,7 +10,8 @@ var DefaultConnection = builder.Configuration["ConnectionStringAzure"];
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
 
 
 // Use Local Connection String if in development

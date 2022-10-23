@@ -12,6 +12,7 @@ using Genre = WebApplication1.Models.SingleAnimeModel;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Newtonsoft.Json;
+using WebApplication1.Models.ChartModels.TopOneHundredBarModel;
 
 namespace WebApplication1.Controllers
 {
@@ -222,6 +223,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
+
                 List<UserAnime> row = _db.UserAnime.Where(x => x.UserName == User.Identity.Name).ToList();
                 //List<SingleAnimeModel> myList = new List<SingleAnimeModel>();
                 Dictionary<string, int> genreIndex = new();
@@ -260,6 +262,48 @@ namespace WebApplication1.Controllers
             }
 
         }
+
+        [HttpPost]
+        [Route("AverageScoreTopAnimeChart")]
+        public async Task<IActionResult> AverageScoreTopAnimeChart()
+        {
+            try
+            {
+                var myChartModel = await _myAnimeClient.GetTopOneHundredAnime();
+                List <TopOneHundredBarModel> myList= new(); 
+                Dictionary<int, int> checkList = new(); // Stores the Year key and Index inside myList
+                foreach(var obj in myChartModel)
+                {
+                    if (checkList.ContainsKey(obj.Year)){
+                        myList[checkList[obj.Year]].counter++;
+                        myList[checkList[obj.Year]].animeSumOverAll += obj.Rating;
+                    }
+                    else
+                    {
+                        checkList.Add(obj.Year, myList.Count()); // Add Year and Index
+                        myList.Add(new TopOneHundredBarModel
+                        {
+                            counter = 1,
+                            Year = obj.Year,
+                            animeSumOverAll = obj.Rating,
+
+                        }) ; 
+                    }
+                }
+                myList.ToList().ForEach(c => c.mean = c.animeSumOverAll / c.counter);
+                List<TopOneHundredBarModel> sortedList = myList.
+                    OrderBy(x => x.Year).ToList();
+                return PartialView("_TopAnimeChartPartial",sortedList);
+
+            }
+            catch (Exception e)
+            {
+                /// Return Some Error
+            }
+
+            return PartialView("_UserAnimeLikeChartPartial");
+        }
+
 
         [HttpPost]
         [Route("RemoveUserAnime")]

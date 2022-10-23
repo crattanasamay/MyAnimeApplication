@@ -8,6 +8,7 @@ using Polly.Retry;
 using Polly;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
+using WebApplication1.Models.ChartModels.TopOneHundredChart;
 
 namespace WebApplication1.Clients
 {
@@ -115,6 +116,59 @@ namespace WebApplication1.Clients
 
             return genres;
         }
+
+        public async Task<List<TopOneHundredChartModel>> GetTopOneHundredAnime()
+        {
+
+            try
+            {
+                List<TopOneHundredChartModel> chartModel = new();
+
+                string animeUrl = $"https://api.myanimelist.net/v2/anime/ranking?ranking_type=all&limit=100'";
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri(animeUrl),
+                    Headers =
+                        {
+                            {MyAnimeListUrl, _config["MyAnimeListApiKey"]}
+                        }
+
+                };
+                return await _asyncRetryPolicyTime.ExecuteAsync(async () =>
+                {
+                    using var response = await _httpClient.SendAsync(request);
+                    {
+                        response.EnsureSuccessStatusCode();
+                        var body = await response.Content.ReadAsStringAsync();
+                        dynamic? json = JsonConvert.DeserializeObject<TopOneHundredModel>(body);
+                        if(json != null)
+                        {
+                            foreach (var obj in json.data)
+                            {
+                                var animeData = await GetSingleAnimeInfo(obj.node.id);
+
+                                chartModel.Add(new TopOneHundredChartModel
+                                {
+                                    AnimeId = animeData.id,
+                                    Title = animeData.title,
+                                    Rating = animeData.mean,
+                                    Year = animeData.start_season.year
+                                });
+
+                            }
+
+                        }
+                        return chartModel;
+                    };
+                });
+            }
+            catch (Exception e)
+            {
+                ////
+            }
+            return null;
+        }
     }
 
   
@@ -125,6 +179,8 @@ namespace WebApplication1.Clients
         public Task<SingleAnimeModel> GetSingleAnimeInfo(int id);
 
         public string[] SplitGenreString(string genreString);
+
+        public Task<List<TopOneHundredChartModel>> GetTopOneHundredAnime();
     }
 
 }
