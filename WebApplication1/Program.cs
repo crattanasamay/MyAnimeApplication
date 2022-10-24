@@ -4,12 +4,13 @@ using WebApplication1.Controllers;
 using WebApplication1.Data;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using RestSharp;
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 var DefaultConnection = builder.Configuration["ConnectionStringAzure"];
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 
