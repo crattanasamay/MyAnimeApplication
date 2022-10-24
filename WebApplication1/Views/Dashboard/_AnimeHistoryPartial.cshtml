@@ -2,29 +2,31 @@
 @model List<AnimeHistoryModel>
 
 <div id="ChildDashboardView">
-    <table class="table table-bordered table-striped" style="width:50%">
-        <tr class="">
-            <th style=""><h4>Anime Image</h4></th>
-            <th style="">Anime Name</th>
-            <th style="">Anime Season</th>
-            <th style="">Rating</th>
+    <table class="table table-bordered table-striped" style="width:100%">
+        <tr class="row">
+            <th class="col-md-1 col-sm-2 col-5"><p>Anime Image</p></th>
+            <th class="col-md-5 col-sm-5 col-5">Anime Name</th>
+            <th class="col-md-3 col-sm-3 col-0">Anime Season</th>
+            <th class="col-md-1 col-sm-1 col-0">Rating</th>
+            <th class="col-md-2 col-sm-2 col-2">Remove Anime</th>
+
         </tr>
         @foreach(var obj in Model){
-            <tr class="">
-                <td class="">
+            <tr class="row">
+                <td class="col-md-1 col-sm-2 col-5">
                     <img src="@obj.AnimeImg" style="max-height: 150px"/>
                 </td>
-                <td class="">
-                    <h5>@obj.AnimeTitle</h5>
+                <td class="col-md-5 col-sm-5 col-5">
+                    <p>@obj.AnimeTitle<p/>
                 </td>
-                <td>
-                    <h4>@obj.AnimeSeason</h4>
+                <td class="col-md-3 col-sm-3 col-0">
+                    <p>@obj.AnimeSeason</p>
 
                 </td>
-                <td>
-                    <h4>@obj.AnimeRating</h4>
+                <td class="col-md-1 col-sm-1 col-0">
+                    <p>@obj.AnimeRating</p>
                 </td>
-                <td>
+                <td class="col-md-2 col-sm-2 col-2">
                     <form asp-controller="Dashboard" asp-validation-for="RemoveButton" asp-action="RemoveUserAnime" asp-route-id="@obj.AnimeId" method="post">
                         <button type="submit" class="btn btn-primary">Remove Anime</button>
                     </form>
