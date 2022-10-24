@@ -1,62 +1,72 @@
 ﻿@using WebApplication1.Models.ChartModels.TopOneHundredBarModel;
 @model List<TopOneHundredBarModel>;
 
-<div class="container-fluid" style="float:left; height:300px; width:500px; background:white;" id="animeChart">
-    <canvas id="myChartTwo"></canvas>
-    <script>
+<div class="col-lg-7 col-md-12 col-7">
+    <div class="card">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Number of Anime By Year in Top 25</h6>
+        </div>
+        <div class="card-body">
 
-        var yearLabels = [];
-        var yearData = [];
-        var yearMeanData = [];
 
-        @foreach (var obj in Model)
-        {
-            @:yearLabels.push("@obj.Year");
-            @:yearData.push("@obj.counter");
-            @:yearMeanData.push("@obj.mean");
+            <canvas id="myChartTwo" style="background:#E7E9E9 ;"></canvas>
+        <script>
+            var yearLabels = [];
+            var yearData = [];
+            var yearMeanData = [];
 
-        }
-        const ctx = document.getElementById('myChartTwo').getContext('2d');
-        const mysChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: yearLabels,
-                datasets: [{
-                    label: '# of Animes',
-                    data: yearData,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                },
-                {
-                    type: 'line',
-                    label: 'Mean of Each Season',
-                    data: yearMeanData,
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+            @foreach (var obj in Model)
+            {
+                @:yearLabels.push("@obj.Year");
+                @:yearData.push("@obj.counter");
+                @:yearMeanData.push("@obj.mean");
+
             }
-        });
-    </script>
+            var ctx = document.getElementById('myChartTwo').getContext('2d');
+            var mysChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: yearLabels,
+                    datasets: [{
+                        label: '# of Animes',
+                        data: yearData,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    },
+                    {
+                        type: 'line',
+                        label: 'Mean of Each Season',
+                        data: yearMeanData,
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    responsive: true,
+
+                }
+            });
+        </script>
+        </div>
+    </div>
 
 </div>
 

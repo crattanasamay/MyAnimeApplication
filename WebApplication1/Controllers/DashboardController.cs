@@ -152,7 +152,7 @@ namespace WebApplication1.Controllers
                         counterBelow++;
                     }
                 }
-                int[] list = { counterAbove, counterBelow };
+                int[] list = { counterAbove, counterBelow, counterAbove+counterBelow };
                 return PartialView("_AnimeLikedPartial", list);
 
             }

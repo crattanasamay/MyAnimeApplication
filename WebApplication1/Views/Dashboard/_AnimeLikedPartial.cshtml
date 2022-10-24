@@ -1,30 +1,57 @@
 ﻿@model  int[];
 
-<div id="ChildDashboardView">
+<div id="ChildDashboardView" class ="container-fluid" style="padding-top: 1.5rem;">
+    <h2>Dashboard</h2>
     <div class="row">
-        <div class="card col-4 rounded-4 bg-secondary">
-            <div class="card-body ">
-                <h3 class="card-header text-center bg-secondary">
-                    Anime Above 7.0
-                </h3>
-                <h3 class="card-text text-center">
-                    @Model[0]
-                </h3>
+        <div class="col-xl-3 col-lg-6 .col-md-7	 col-7  mb-4">
+            <div class="card border-left-primary shadow h-100 py-2"">
+                <div class="card-body ">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1 text-center">
+                                Anime Above 7+
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-center">
+                                @Model[0]
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="card col-4 rounded-4 bg-secondary">
-            <div class="card-body">
-                <h3 class="card-header text-center bg-secondary">
-                    Anime Below 7.0
-                </h3>
-                <h3 class="card-text text-center">
-                    @Model[1]
-                </h3>
+        <div class="col-xl-3 col-lg-6 .col-md-7	col-7  mb-4">
+            <div class="card border-left-primary shadow h-100 py-2"">
+                <div class="card-body ">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1 text-center">
+                                Anime Below 7
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-center">
+                                @Model[1]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 .col-md-7	 col-7 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body ">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1 text-center">
+                                Total Anime 
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-center">
+                                @Model[2]
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 
 

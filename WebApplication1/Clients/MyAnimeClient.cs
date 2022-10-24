@@ -124,7 +124,7 @@ namespace WebApplication1.Clients
             {
                 List<TopOneHundredChartModel> chartModel = new();
 
-                string animeUrl = $"https://api.myanimelist.net/v2/anime/ranking?ranking_type=all&limit=100'";
+                string animeUrl = $"https://api.myanimelist.net/v2/anime/ranking?ranking_type=all&limit=25";
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Get,
