@@ -11,8 +11,8 @@ var DefaultConnection = builder.Configuration["ConnectionStringAzure"];
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 // Development Mode
-//builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+//builder.Services.AddRazorPages();
 
 
 

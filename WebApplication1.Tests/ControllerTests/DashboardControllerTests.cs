@@ -90,7 +90,7 @@ namespace WebApplication1.Tests.ControllerTests
             
             //Assert
             animeInfoTest.Should().NotBeNull();
-            Assert.Equal("_AnimeHistoryPartial",result2.ViewName);
+            Assert.Equal("_AnimeHistoryPartial",result2?.ViewName);
             animeInfoTest.Should().BeOfType<List<AnimeHistoryModel>>();
             
         }

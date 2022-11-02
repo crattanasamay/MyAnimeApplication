@@ -75,7 +75,7 @@ namespace WebApplication1.Controllers
 
 
         }
-
+        [Route("Login")]
         public IActionResult Login()
         {
            
@@ -84,6 +84,7 @@ namespace WebApplication1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("Login")]
 
 
         public async Task<IActionResult> Login(User obj)
@@ -118,10 +119,7 @@ namespace WebApplication1.Controllers
 
                         var indentity = new ClaimsIdentity(claims, "MyCookieAuth");
                         ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(indentity);
-
                         await HttpContext.SignInAsync("MyCookieAuth", claimsPrincipal);
-
-
                         return RedirectToAction("Index", "Dashboard");
                     }
                     else
