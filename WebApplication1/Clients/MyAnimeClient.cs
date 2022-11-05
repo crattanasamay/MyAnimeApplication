@@ -9,6 +9,9 @@ using Polly;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
 using WebApplication1.Models.ChartModels.TopOneHundredChart;
+using WebApplication1.Data;
+using System.ComponentModel;
+using Microsoft.Identity.Client;
 
 namespace WebApplication1.Clients
 {
@@ -26,6 +29,7 @@ namespace WebApplication1.Clients
 
         public MyAnimeClient(HttpClient httpClient,IConfiguration config)
         {
+    
             _httpClient = httpClient;
             _config = config;
             _asyncRetryPolicy = Policy.Handle<HttpRequestException>().RetryAsync(3);
@@ -170,6 +174,8 @@ namespace WebApplication1.Clients
             return null;
         }
     }
+
+  
 
   
 

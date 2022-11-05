@@ -11,6 +11,10 @@
         $("#ChartRowOne").append(data);
     });
 
+    $.post("/AnimeSeasonGenreChart/", function (data) {
+        $("#ChartRowTwo").append(data);
+    });
+
     
   
 });
@@ -44,10 +48,16 @@ $("ul#submenu1 > li > a > span").click((event) => {
     LoadAnimeSeason(event); // send event to load partial view
 });
 
+$("ul#FUCK").click(() => {
+    alert("WTF");
+});
+
 
 
 
 $(document).ready(() => {
+    $('dropdown-toggle').dropdown()
+
     DeleteMainView();
     AddMainDashboardView();
     $.post("/AnimeLikedPartial/", function (data) {
@@ -61,14 +71,22 @@ $(document).ready(() => {
         $("#ChartRowOne").append(data);
     });
 
+    $.post("/AnimeSeasonGenreChart/", function (data) {
+        $("#ChartRowTwo").append(data);
+    });
+
+
     
 });
 function AddMainDashboardView() {
     $('<div class="container-fluid" id="MainDashboardView" style=""></div>').appendTo('#DashboardView');
     $('<div class="container-fluid" style="padding-left:1.5rem;"><div class="row" id="ChartRowOne"></div></div>').appendTo('#DashboardView');
+    $('<div class="container-fluid" style="padding-left:1.5rem; padding-top: 1.5rem;"><div class="row" id="ChartRowTwo"></div></div>').appendTo('#DashboardView');
+
 }
 function DeleteMainView() {
     $("#DashboardView").html("");
+    $("#ChildDashboardView").html("");
 }
 
 

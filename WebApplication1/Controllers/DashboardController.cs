@@ -264,6 +264,22 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
+        [Route("AnimeSeasonGenreChart")]
+
+        public IActionResult AnimeSeasonGenreChart(string event_id) 
+        {
+
+            List<string> seasons = new() { "Winter", "Spring", "Summer", "Fall" };
+            AnimeNavigationModel model = new()
+            {
+                Seasons = seasons,
+                CurrentYear = 2022
+            };
+
+            return PartialView("_SeasonalAnimeGenreCard",model);
+        }
+
+        [HttpPost]
         [Route("AverageScoreTopAnimeChart")]
         public async Task<IActionResult> AverageScoreTopAnimeChart()
         {
