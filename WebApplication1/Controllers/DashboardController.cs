@@ -40,11 +40,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                List<string> seasons = new(){"Winter","Spring","Summer","Fall"};
-                AnimeNavigationModel model = new(){
-                    Seasons = seasons,
-                    CurrentYear = 2022
-                };
+                AnimeNavigationModel model = new();
 
 
                 // if user is authenticated make sure to login
@@ -266,15 +262,10 @@ namespace WebApplication1.Controllers
         [HttpPost]
         [Route("AnimeSeasonGenreChart")]
 
-        public IActionResult AnimeSeasonGenreChart(string event_id) 
+        public IActionResult AnimeSeasonGenreChart() 
         {
 
-            List<string> seasons = new() { "Winter", "Spring", "Summer", "Fall" };
-            AnimeNavigationModel model = new()
-            {
-                Seasons = seasons,
-                CurrentYear = 2022
-            };
+            AnimeNavigationModel model = new();
 
             return PartialView("_SeasonalAnimeGenreCard",model);
         }
