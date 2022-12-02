@@ -11,12 +11,9 @@
         $("#ChartRowOne").append(data);
     });
 
-    $.post("/AnimeSeasonGenreChart/", function (data) {
+    $.post("/AnimeSeasonGenreChartNav/", function (data) {
         $("#ChartRowTwo").append(data);
     });
-
-    
-  
 });
 
 // send request to anime partial season using post method
@@ -48,15 +45,14 @@ $("ul#submenu1 > li > a > span").click((event) => {
     LoadAnimeSeason(event); // send event to load partial view
 });
 
-$("ul#FUCK").click(() => {
-    alert("WTF");
+$("ul#submenu2 > li > a > span").click((event) => {
+    console.log("WTF");
 });
 
 
 
 
 $(document).ready(() => {
-    $('dropdown-toggle').dropdown()
 
     DeleteMainView();
     AddMainDashboardView();
@@ -71,8 +67,12 @@ $(document).ready(() => {
         $("#ChartRowOne").append(data);
     });
 
-    $.post("/AnimeSeasonGenreChart/", function (data) {
+    $.post("/AnimeSeasonGenreChartNav/", function (data) {
         $("#ChartRowTwo").append(data);
+    });
+
+    $('div#seasonalAnimeGenreChart a').on('click', function () {
+        console.log("TEST");
     });
 
 

@@ -25,13 +25,15 @@ namespace WebApplication1.Controllers
         private readonly ApplicationDbContext _db;
         private readonly IJikanApiClient _jikanAnimeClient;
         private readonly IMyAnimeClient _myAnimeClient;
+        private readonly ILogger<DashboardController> _logger;
 
 
-        public DashboardController(ApplicationDbContext db, IJikanApiClient jikanAnimeClient, IMyAnimeClient myAnimeClient)
+        public DashboardController(ApplicationDbContext db, IJikanApiClient jikanAnimeClient, IMyAnimeClient myAnimeClient, ILogger<DashboardController> logger)
         {
             _db = db;
             _jikanAnimeClient = jikanAnimeClient;
             _myAnimeClient = myAnimeClient;
+            _logger = logger;
         }
 
         [Route("Dashboard")]
@@ -260,9 +262,9 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        [Route("AnimeSeasonGenreChart")]
+        [Route("AnimeSeasonGenreChartNav")]
 
-        public IActionResult AnimeSeasonGenreChart() 
+        public IActionResult AnimeSeasonGenreNav() 
         {
 
             AnimeNavigationModel model = new();
@@ -270,6 +272,41 @@ namespace WebApplication1.Controllers
             return PartialView("_SeasonalAnimeGenreCard",model);
         }
 
+        [HttpPost]
+        [Route("AnimeSeasonGenreChart")]
+
+        public async Task<IActionResult> AnimeSeasonGenreChart(string? id)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    _logger.LogDebug("anime id retrieved is ");
+
+                    throw new ArgumentNullException(nameof(id));
+                }
+                int index = id.IndexOf('_');
+                string season = id.Substring(0, index);
+                string year = id.Substring(index + 1);
+                var animeSeasonList = await _jikanAnimeClient.GetAnimeBySeason(season,year);
+
+
+                return PartialView("_SeasonalAnimeGenreChart");
+            }
+            catch (Exception e)
+            {
+
+                return View("error");
+
+            }
+
+            return View("error");
+
+
+
+        }
+
+        
         [HttpPost]
         [Route("AverageScoreTopAnimeChart")]
         public async Task<IActionResult> AverageScoreTopAnimeChart()

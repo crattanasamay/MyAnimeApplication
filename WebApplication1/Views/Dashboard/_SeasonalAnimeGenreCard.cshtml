@@ -7,19 +7,20 @@
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold ">Top Genre of Fall 2022</h6>
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Seasons
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    @for (int i = 0; i < 3; i++)
-                    {
-                        for (int j = 0; j < 4; j++)
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="seasonalAnimeGenreChart">
+    
+                        @for (int i = 0; i < 3; i++)
                         {
-                            <li>
-                                <a class="dropdown-item" id="@Model.Seasons[j]_@(Model.CurrentYear - i)"> <span class="d-none d-sm-inline" id="@Model.Seasons[j]_@(Model.CurrentYear - i)">@Model.Seasons[j] @(Model.CurrentYear - i)</span>  </a>
-                            </li>
+                            for (int j = 0; j < 4; j++)
+                            {
+                                    <a class="dropdown-item">@Model.Seasons[j] @(Model.CurrentYear - i)  </a>
+                                
+                            }
                         }
-                    }
+                  
                 </div>
             </div>
 
@@ -34,6 +35,7 @@
                         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                         datasets: [{
                             label: '# of Votes',
+
                             data: [12, 19, 3, 5, 2, 3],
                             backgroundColor: [
                                 'rgba(255, 99, 132, 0.2)',
@@ -73,5 +75,8 @@
 
 @section Scripts{
     <script src="~/js/Dashboard.js"></script>
+    <script>
+       
+    </script>
 
 }
