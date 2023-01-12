@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NuGet.Configuration;
 using System.Collections;
+using Castle.Core.Logging;
 
 namespace WebApplication1.Tests.ControllerTests
 {
@@ -70,13 +71,17 @@ namespace WebApplication1.Tests.ControllerTests
             IConfiguration _config = GetUserSecrets();
             IMyAnimeClient _myAnimeClient = new MyAnimeClient(new HttpClient(), _config);
             IJikanApiClient _jikanApiClient = new JikanApiClient();
+            var serviceProvider = new ServiceCollection().AddLogging().BuildServiceProvider();
 
+            var factory = serviceProvider.GetService<ILoggerFactory>();
+
+            var logger = factory.Create("<DashbboardController>");
 
             var userIdentity = new ClaimsIdentity(claims, "TestCookie");
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(userIdentity);
 
 
-            var controller = new DashboardController(_db, _jikanApiClient, _myAnimeClient)
+            var controller = new DashboardController(_db, _jikanApiClient, _myAnimeClient,logger)
             {
                 ControllerContext = new ControllerContext()
                 {
