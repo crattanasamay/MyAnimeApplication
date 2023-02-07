@@ -24,6 +24,8 @@ using Microsoft.Extensions.DependencyInjection;
 using NuGet.Configuration;
 using System.Collections;
 using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
+
 
 namespace WebApplication1.Tests.ControllerTests
 {
@@ -73,9 +75,9 @@ namespace WebApplication1.Tests.ControllerTests
             IJikanApiClient _jikanApiClient = new JikanApiClient();
             var serviceProvider = new ServiceCollection().AddLogging().BuildServiceProvider();
 
-            var factory = serviceProvider.GetService<ILoggerFactory>();
+            var mock = new Mock<ILogger<DashboardController>>();
+            ILogger<DashboardController> logger = mock.Object;
 
-            var logger = factory.Create("<DashbboardController>");
 
             var userIdentity = new ClaimsIdentity(claims, "TestCookie");
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(userIdentity);
