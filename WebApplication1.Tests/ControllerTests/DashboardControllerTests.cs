@@ -25,6 +25,7 @@ using NuGet.Configuration;
 using System.Collections;
 using Castle.Core.Logging;
 using Microsoft.Extensions.Logging;
+using System.Configuration;
 
 
 namespace WebApplication1.Tests.ControllerTests
@@ -78,12 +79,17 @@ namespace WebApplication1.Tests.ControllerTests
             var mock = new Mock<ILogger<DashboardController>>();
             ILogger<DashboardController> logger = mock.Object;
 
+            Mock<IConfiguration> config = new Mock<IConfiguration>();
+            config.SetupGet(x => x[It.IsAny<string>()]).Returns("the string you want to return");
+
+
+
 
             var userIdentity = new ClaimsIdentity(claims, "TestCookie");
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(userIdentity);
 
 
-            var controller = new DashboardController(_db, _jikanApiClient, _myAnimeClient,logger)
+            var controller = new DashboardController(_db, _jikanApiClient, _myAnimeClient,logger,_config)
             {
                 ControllerContext = new ControllerContext()
                 {

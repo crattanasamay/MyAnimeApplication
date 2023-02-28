@@ -13,6 +13,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Newtonsoft.Json;
 using WebApplication1.Models.ChartModels.TopOneHundredBarModel;
+using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication1.Controllers
 {
@@ -26,14 +29,16 @@ namespace WebApplication1.Controllers
         private readonly IJikanApiClient _jikanAnimeClient;
         private readonly IMyAnimeClient _myAnimeClient;
         private readonly ILogger<DashboardController> _logger;
+        private readonly IConfiguration _configuration;
 
 
-        public DashboardController(ApplicationDbContext db, IJikanApiClient jikanAnimeClient, IMyAnimeClient myAnimeClient, ILogger<DashboardController> logger)
+        public DashboardController(ApplicationDbContext db, IJikanApiClient jikanAnimeClient, IMyAnimeClient myAnimeClient, ILogger<DashboardController> logger, IConfiguration _iconfig)
         {
             _db = db;
             _jikanAnimeClient = jikanAnimeClient;
             _myAnimeClient = myAnimeClient;
             _logger = logger;
+            _configuration = _iconfig;
         }
 
         [Route("Dashboard")]
@@ -137,21 +142,55 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                List<UserAnime> row = _db.UserAnime.Where(x => x.UserName == User.Identity.Name).ToList();
-                int counterAbove = 0;
-                int counterBelow = 0;
-                foreach (var obj in row)
+                // Fix this so DB sorts between below 7 and above 7 return list of count above 7 and below 7
+                if(User.Identity == null) { return null; }
+
+                string conn_string = _configuration["ConnectionStringAzure"];
+                using (var conn = new SqlConnection(conn_string))
                 {
+                    var cmd = conn.CreateCommand();
+                    cmd.CommandText = "spUserAnime_GetSevenCount";
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserName", User.Identity.Name);
+                    conn.Open();
+                    var result = cmd.ExecuteReader();
+
+
+                    if(result.Read())
+                    {
+                        var under_seven = result.GetInt32(0);
+                        var above_seven = result.GetInt32(1);
+                        var total_liked = result.GetInt32(2);
+
+                        var r = new LikedAnimeSeven
+                        {
+                            above = above_seven,
+                            below = under_seven,
+                            total = total_liked,
+                        };
+                        result.Close();
+                        return PartialView("_AnimeLikedPartial", r);
+                    }
+                   
+                
+                  
                     
-                    if (obj.Rating > 7.00){
-                        counterAbove++;
-                    }
-                    else{
-                        counterBelow++;
-                    }
                 }
-                int[] list = { counterAbove, counterBelow, counterAbove+counterBelow };
-                return PartialView("_AnimeLikedPartial", list);
+                // List<UserAnime> row = _db.UserAnime.Where(x => x.UserName == User.Identity.Name).ToList();
+                //int counterAbove = 0;
+                //int counterBelow = 0;
+                //foreach (var obj in row)
+                //{
+                    
+                //    if (obj.Rating > 7.00){
+                //        counterAbove++;
+                //    }
+                //    else{
+                //        counterBelow++;
+                //    }
+                //}
+                //int[] list = { counterAbove, counterBelow, counterAbove+counterBelow };
+                //return PartialView("_AnimeLikedPartial", list);
 
             }
             catch(Exception e)
@@ -228,6 +267,7 @@ namespace WebApplication1.Controllers
                 List<UserAnimeChartModel> myList = new();
                 foreach (var item in row)
                 {
+                    // should fix this to do in the DB not during runtime
                     string[] genreList = _myAnimeClient.SplitGenreString(item.genres);
                     string[] genreListResult = genreList.Take(genreList.Length - 1).ToArray();
                    

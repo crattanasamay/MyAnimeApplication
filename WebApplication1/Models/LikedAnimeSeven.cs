@@ -4,5 +4,7 @@
     {
         public int above { get; set; }
         public int below { get; set; }
+
+        public int total { get; set; }
     }
 }
