@@ -40,7 +40,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                JikanSeasonModel jikanSeasonModel = await _jikanClient.GetAnimeBySeason("winter", "2023");
+                JikanSeasonModel jikanSeasonModel = await _jikanClient.GetAnimeBySeason("fall", "2023");
                 List<Datum> animeSeasonList = _jikanClient.FilterAnime(jikanSeasonModel);
                 return PartialView("_HomePageCarouselPartial",animeSeasonList);
 

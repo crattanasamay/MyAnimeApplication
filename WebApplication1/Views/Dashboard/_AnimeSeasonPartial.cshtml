@@ -15,7 +15,7 @@
                         <div class="card col-xl-4" style="width: 18rem;" id="@Model[i+j].mal_id">
                             <img class="card-img-top" src="@Model[i+j].images.jpg.image_url" alt="Card image cap">
                             <div class="card-body">
-                                <h5 class="card-title">@Model[i+j].title_english</h5>
+                                <h5 class="card-title">@Model[i+j].title</h5>
 
                                 <p class="card-text">Rating: @Model[i+j].score</p>
                                 <form asp-controller="Dashboard" asp-validation-for="LikeButton" asp-action="LikeAnime" asp-route-id="@Model[i+j].mal_id" method="post">

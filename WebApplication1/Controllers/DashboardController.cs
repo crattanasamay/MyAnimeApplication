@@ -143,7 +143,7 @@ namespace WebApplication1.Controllers
             try
             {
                 // Fix this so DB sorts between below 7 and above 7 return list of count above 7 and below 7
-                if(User.Identity == null) { return null; }
+                if (User.Identity == null) { return null; }
 
                 string conn_string = _configuration["ConnectionStringAzure"];
                 using (var conn = new SqlConnection(conn_string))
@@ -156,7 +156,7 @@ namespace WebApplication1.Controllers
                     var result = cmd.ExecuteReader();
 
 
-                    if(result.Read())
+                    if (result.Read())
                     {
                         var under_seven = result.GetInt32(0);
                         var above_seven = result.GetInt32(1);
@@ -171,17 +171,17 @@ namespace WebApplication1.Controllers
                         result.Close();
                         return PartialView("_AnimeLikedPartial", r);
                     }
-                   
-                
-                  
-                    
+
+
+
+
                 }
                 // List<UserAnime> row = _db.UserAnime.Where(x => x.UserName == User.Identity.Name).ToList();
                 //int counterAbove = 0;
                 //int counterBelow = 0;
                 //foreach (var obj in row)
                 //{
-                    
+
                 //    if (obj.Rating > 7.00){
                 //        counterAbove++;
                 //    }

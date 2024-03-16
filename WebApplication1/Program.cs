@@ -7,6 +7,7 @@ using RestSharp;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 var DefaultConnection = builder.Configuration["ConnectionStringAzure"];
+var LocalAnimeDb = builder.Configuration["LocalAnimeDb"];
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -18,7 +19,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 // Use Local Connection String if in development
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-    builder.Configuration["ConnectionStringAzure"]
+    builder.Configuration["LocalAnimeDb"]
 ));
 
 
