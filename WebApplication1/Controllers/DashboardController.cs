@@ -353,7 +353,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                var myChartModel = await _myAnimeClient.GetTopOneHundredAnime();
+                var myChartModel = await _myAnimeClient.GetTopOneHundredAnime(); ///// To Fix myChartModel Returning Null need to fix 
                 List <TopOneHundredBarModel> myList= new(); 
                 Dictionary<int, int> checkList = new(); // Stores the Year key and Index inside myList
                 foreach(var obj in myChartModel)
@@ -376,7 +376,7 @@ namespace WebApplication1.Controllers
                 }
                 myList.ToList().ForEach(c => c.mean = c.animeSumOverAll / c.counter);
                 List<TopOneHundredBarModel> sortedList = myList.
-                    OrderBy(x => x.Year).ToList();
+                     OrderBy(x => x.Year).ToList();
                 return PartialView("_TopAnimeChartPartial",sortedList);
 
             }
